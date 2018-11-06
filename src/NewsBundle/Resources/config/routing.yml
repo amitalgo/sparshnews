@@ -1,0 +1,6 @@
+news_homepage:
+    path:     /
+    defaults: { _controller: NewsBundle:Default:index }
+app:
+    resource: '@NewsBundle/Controller/'
+    type: annotation

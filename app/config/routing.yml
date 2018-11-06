@@ -1,0 +1,25 @@
+admin:
+    resource: "@AdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+news:
+    resource: "@NewsBundle/Resources/config/routing.yml"
+    prefix:   /
+
+login:
+    resource: "@LoginBundle/Resources/config/routing.yml"
+    prefix:   /
+
+category:
+    resource: "@CategoryBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+easy_admin_bundle:
+     resource: '@CategoryBundle/Controller/EasyAdmin/CategoryController.php'
+     type:     annotation
+     prefix:   /admin/

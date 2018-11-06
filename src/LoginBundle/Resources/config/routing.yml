@@ -1,0 +1,6 @@
+login_homepage:
+    path:     /
+    defaults: { _controller: LoginBundle:Default:index }
+app:
+    resource: '@LoginBundle/Controller/'
+    type: annotation

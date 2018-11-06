@@ -1,0 +1,172 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: "@CategoryBundle/Resources/config/services.yml" }
+    - { resource: "@LoginBundle/Resources/config/services.yml" }
+    - { resource: "@NewsBundle/Resources/config/services.yml" }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi: ~
+    #translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        mapping_types:
+                    enum: string
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.project_dir%/var/data/data.sqlite"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+# Nelmio CORS Configuration
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['*']
+        allow_headers: ['*']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        max_age: 3600
+        hosts: []
+        origin_regex: false
+
+# FOSRest Configuration
+fos_rest:
+    body_listener: true
+    format_listener:
+        rules:
+            - { path: '^/', priorities: ['json','html'], fallback_format: json, prefer_extension: false }
+    param_fetcher_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+        templating_formats:
+                    html: true
+        force_redirects:
+                    html: true
+        default_engine:       twig
+
+easy_admin:
+    entities:
+      Category:
+        class: CategoryBundle\Entity\Category
+        label: 'category'
+        new:
+            title: 'Create %%entity_label%%'
+            fields:
+              - { property: 'name', type: 'text', label: 'category Name',type_options: {required: true } }
+              - { property: 'image', type: 'file', label: 'Image',type_options: {required: true }}
+              - { property: 'icon', type: 'file', label: 'Icon',type_options: {required: true } }
+              - { property: 'sortOrder', label: 'Sort',type_options: {required: true } }
+              - { property: 'parentId', type_options: {required: true, class: 'CategoryBundle\Entity\Category' } }
+        edit:
+            title: 'Edit %%entity_label%%'
+            fields:
+              - { property: 'name', type: 'text', label: 'category Name',type_options: {required: true } }
+              - { property: 'image', type: 'file', label: 'Image',type_options: { data_class: null,required: false  }}
+              - { property: 'ImgName', type: 'hidden'}
+              - { property: 'IconName', type: 'hidden'}
+              - { property: 'icon', type: 'file', label: 'Icon',type_options: { data_class: null,required: false  } }
+              - { property: 'sortOrder', label: 'Sort',type_options: {required: true } }
+              - { property: 'parentId', type_options: { class: 'CategoryBundle\Entity\Category' } }
+
+        list:
+          title: '%%entity_label%% List'
+          actions:
+            - { name: 'search', label: 'Search'}
+            - { name: 'new', label: 'Add category'}
+            - { name: 'edit', label: 'Edit'}
+            - { name: 'delete', label: 'Delete'}
+
+          title: '%%entity_label%% List'
+          fields: ['id',{ property: 'name', label: 'category' }, { property: 'icon', label: 'Icon', type: 'image' },{ property: 'image', label: 'Image',type: 'image' }]
+        new:
+          title: 'Add category'
+          actions:
+            - { name: 'save', label: 'Save'}
+            - { name: 'list', label: 'category List'}
+      News:
+        class: NewsBundle\Entity\News
+        label: 'News'
+        new:
+          title: 'Create %%entity_label%%'
+          fields:
+            - { property: 'newsHeading', type: 'text', label: 'News Heading',type_options: {required: true }  }
+            - { property: 'newsDescription', label: 'News Description',type_options: {required: true }}
+            - { property: 'newsContent', label: 'News Content',type_options: {required: true }}
+            - { property: 'newsMedia', type: 'file', label: 'Image',type_options: {required: true } }
+            - { property: 'newsCategory', type_options: {required: true, class: 'CategoryBundle\Entity\Category' } }
+        edit:
+          title: 'Edit %%entity_label%%'
+          fields:
+            - { property: 'newsHeading', type: 'text', label: 'News Heading',type_options: {required: true }  }
+            - { property: 'newsDescription', label: 'News Description',type_options: {required: true } }
+            - { property: 'newsContent', label: 'News Content',type_options: {required: true } }
+            - { property: 'newsMedia', type: 'file', label: 'Image',type_options: { data_class: null,required: false  } }
+            - { property: 'newsCategory', type_options: {required: true , class: 'CategoryBundle\Entity\Category' } }
+            - { property: 'status', type_options: {required: true,choices: {'active':'active', 'inactive':'inactive'}} ,type: 'choice' }
+        list:
+          actions:
+            - { name: 'search', label: 'Search'}
+            - { name: 'new', label: 'Add News'}
+            - { name: 'edit', label: 'Edit'}
+            - { name: 'delete', label: 'Delete'}
+          title: '%%entity_label%% List'
+          fields: ['id',{ property: 'newsHeading', label: 'News Heading' },'newsDescription','newsContent','newsCategory',{ property: 'newsMedia', label: 'Image',type: 'image' }]
+    site_name: 'Sparsh News'

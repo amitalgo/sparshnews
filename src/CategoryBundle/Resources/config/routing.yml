@@ -1,0 +1,6 @@
+category_homepage:
+    path:     /
+    defaults: { _controller: CategoryBundle:Default:index }
+app:
+    resource: '@CategoryBundle/Controller/'
+    type: annotation

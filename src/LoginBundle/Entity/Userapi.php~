@@ -1,0 +1,55 @@
+<?php
+
+namespace LoginBundle\Entity;
+
+/**
+ * Userapi
+ */
+class Userapi
+{
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $userApi;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set userApi
+     *
+     * @param string $userApi
+     *
+     * @return Userapi
+     */
+    public function setUserApi($userApi)
+    {
+        $this->userApi = $userApi;
+
+        return $this;
+    }
+
+    /**
+     * Get userApi
+     *
+     * @return string
+     */
+    public function getUserApi()
+    {
+        return $this->userApi;
+    }
+}
+

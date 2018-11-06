@@ -1,0 +1,58 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        LoginBundle\Entity\Login:
+            algorithm: bcrypt
+        Symfony\Component\Security\Core\User\User: plaintext
+#        AdminBundle\Entity\Admin:
+#            algorithm: plaintext
+#    always_authenticate_before_granting:  true
+#    role_hierarchy:
+#        ROLE_ADMIN: ROLE_ADMIN
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory:
+            memory:
+              users:
+                admin:
+                  password: 123456
+                  roles: 'ROLE_ADMIN'
+#        db_providers:
+#            entity:
+#                class: AdminBundle:Admin
+#        fos_userbundle:
+#            entity:
+#                class: AdminBundle:Admin
+#                property: user
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+#        admin_area:
+#             pattern:    ^/admin
+#             anonymous:  ~
+#             provider:   fos_userbundle
+#             form_login:
+#                 default_target_path: /admin
+#                 check_path: /admin/login
+#                 login_path: /admin/login
+#            logout:
+#                path:   /admin/logout
+#              target: /admin/login
+
+        main:
+            anonymous: ~
+            http_basic: ~
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~
+    access_control:
+      - { path: ^/admin, roles: ROLE_ADMIN }
